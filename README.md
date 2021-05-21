@@ -15,6 +15,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+cd into instagram-clone-base first, then run `npm start`
+
 ### `npm start`
 
 Runs the app in the development mode.\
