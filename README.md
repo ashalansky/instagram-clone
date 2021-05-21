@@ -6,7 +6,7 @@ I built this app using React and deployed using Firebase hosting.
 - real-time database using Firebase Firestore 🔥
 - MaterialUI for some components
 
-My reason for this project was simply to get some basic practice in with React.
+My reason for this project was simply to get some basic practice in with React. This was not to practice styling.
 Inspiration is from https://www.youtube.com/watch?v=f7T48W0cwXM&list=PL-J2q3Ga50oMQa1JdSJxYoZELwOJAXExP&index=3
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
