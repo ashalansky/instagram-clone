@@ -1,8 +1,9 @@
 .post {
-  background-color: white;
-  max-width: 500px;
   border: 1px solid lightgray;
+  width: fit-content;
   margin-bottom: 45px;
+  background-color: #ffffff;
+  max-width: 500px;
 }
 
 .post__image {
@@ -10,6 +11,10 @@
   object-fit: contain;
   border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
+}
+
+.post__avatar {
+  margin-right: 10px;
 }
 
 .post__text {
@@ -20,11 +25,9 @@
 .post__header {
   display: flex;
   align-items: center;
-  padding: 20px;
-}
-
-.post__avatar {
-  margin-right: 10px;
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid lightgray;
 }
 
 .post__commentBox {

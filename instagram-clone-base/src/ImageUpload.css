@@ -13,3 +13,8 @@
   height: 5vh;
   color: thistle;
 }
+
+.imageupload__button {
+  margin: 10px;
+  height: 30px;
+}

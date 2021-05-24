@@ -4,7 +4,7 @@ import Post from './Post';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { db, auth } from './firebase';
-import { Button, Input } from '@material-ui/core';
+import { Button, Input, Avatar } from '@material-ui/core';
 import ImageUpload from './ImageUpload';
 
 
@@ -13,6 +13,7 @@ function getModalStyle() {
   const left = 50;
 
   return {
+    height: "300px",
     top: `${top}%`,
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
@@ -45,28 +46,37 @@ function App() {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         //user has logged in
-        console.log(authUser);
         setUser(authUser);
+
+        if (authUser.displayName) {
+          //dont update username
+        } else {
+          return authUser.updateProfile({
+            displayName: username
+          });
+        }
       } else {
         //user has logged out
         setUser(null);
       }
-    })
-    return () => {
-      //perform some cleanup actions
-      unsubscribe();
-    }
+    });
+      return () => {
+        //perform some cleanup actions
+        unsubscribe();
+      };
   }, [user, username]);
   // useEffect runs a piece of code based on a certain condition
-    useEffect(() => {
-      db.collection('posts').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        //every time  a new post is added, this code is fires.
-        setPosts(snapshot.docs.map(doc => ({
-          id: doc.id, 
-          post: doc.data()
-        })));
-      })
-    }, []);
+  useEffect(() => {
+    db.collection('posts')
+    .orderBy('timestamp', 'desc')
+    .onSnapshot(snapshot => 
+      //every time  a new post is added, this code is fired.
+      setPosts(snapshot.docs.map((doc) => ({
+        id: doc.id, 
+        post: doc.data()
+      })))
+    );
+  }, []);
 
     const signUp = (event) => {
       event.preventDefault();
@@ -163,8 +173,15 @@ function App() {
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png"
           alt=""
         />
-        {user ? (
-          <Button onClick={() => auth.signOut()}>Log Out</Button>
+        {user?.displayName ? (
+          <div className="app_headerRight"> 
+            <Button onClick={() => auth.signOut()}>Log Out</Button>
+            <Avatar 
+              className="app__headerAvatar"
+              alt={user.displayName}
+              src="/static/images/avatar/1.jpg"
+            />
+          </div>
         ): (
           <div className="app__loginContainer">
             <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
@@ -175,18 +192,25 @@ function App() {
 
       <div className="app__posts">
         <div className="app__postsLeft">
-        {
-          posts.map(({id, post}) => (
-            <Post key={id} postId={id} user={user} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
-          ))
-        }
+            {posts.map(({id, post}) => (
+                <Post 
+                  key={id} 
+                  postId={id} 
+                  user={user} 
+                  username={post.username} 
+                  caption={post.caption} 
+                  imageUrl={post.imageUrl}
+                />
+              ))}
         </div>
       </div>
 
     {user?.displayName ? (
-      <ImageUpload  username={user.displayName} />
+      <div className="app__upload">
+        <ImageUpload  username={user.displayName} />
+      </div>
     ): (
-      <h3 className="app__sorry">Sorry you need to login to upload!</h3>
+      <h3 className="app__sorry">Login to upload!</h3>
     )}
     </div>
   );
